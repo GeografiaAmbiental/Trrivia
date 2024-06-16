@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia sobre Contaminación Acústica</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, #FF00FF, #800080, #4B0082, #0000FF, #00FF00, #FFFF00, #FF7F00);
+            background-size: 300% 300%;
+            animation: rainbow 10s infinite alternate;
+        }
+
+        @keyframes rainbow {
+            0% {
+                background-position: top left;
+            }
+            100% {
+                background-position: bottom right;
+            }
+        }
+
+        #container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .option:hover {
+            background-color: #45a049;
+        }
+
+        #hint {
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        #nextButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            margin-top: 20px;
+        }
+
+        #nextButton:hover {
+            background-color: #45a049;
+        }
+
+        #history {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>Contaminación Acústica</h2>
+        <button onclick="startGame()">Comenzar</button>
+    </div>
+
+    <script>
+        var questions = [
+            {
+                question: "¿Qué es la contaminación acústica?",
+                options: ["a) La presencia de sonidos agradables en el ambiente.",
+                          "b) El exceso de ruido que afecta negativamente a la salud humana y animal.",
+                          "c) La falta de ruido en una ciudad.",
+                          "d) El sonido de las olas del mar."],
+                correctAnswer: "b",
+                hint: "La contaminación acústica se refiere al exceso de ruido que puede ser perjudicial para las personas y los animales."
+            },
+            {
+                question: "¿Cómo puede afectar la contaminación acústica a la salud humana?",
+                options: ["a) Mejora la concentración.",
+                          "b) Puede causar estrés, problemas auditivos, trastornos del sueño y enfermedades cardiovasculares.",
+                          "c) Aumenta la creatividad.",
+                          "d) Incrementa la capacidad pulmonar."],
+                correctAnswer: "b",
+                hint: "El ruido excesivo puede tener efectos adversos como estrés y problemas de sueño."
+            },
+            {
+                question: "¿Cuál es una fuente común de contaminación acústica?",
+                options: ["a) El canto de los pájaros.",
+                          "b) Tráfico vehicular, obras de construcción y aviones.",
+                          "c) El sonido de la lluvia.",
+                          "d) Las olas del mar."],
+                correctAnswer: "b",
+                hint: "Las ciudades son especialmente afectadas por el ruido del tráfico y la construcción."
+            },
+            {
+                question: "¿Cómo afecta la contaminación acústica a la fauna?",
+                options: ["a) No tiene ningún efecto en los animales.",
+                          "b) Puede interferir con la comunicación, navegación y reproducción de los animales.",
+                          "c) Ayuda a los animales a encontrar pareja más fácilmente.",
+                          "d) Mejora la adaptación al entorno urbano."],
+                correctAnswer: "b",
+                hint: "El ruido puede dificultar la comunicación y orientación de muchos animales."
+            },
+            {
+                question: "¿Qué se puede hacer para reducir la contaminación acústica en las ciudades?",
+                options: ["a) Implementar zonas de baja emisión de ruido y utilizar materiales de construcción insonorizados.",
+                          "b) Aumentar el volumen de la música en las calles.",
+                          "c) Construir más carreteras.",
+                          "d) Permitir más ruido en parques naturales."],
+                correctAnswer: "a",
+                hint: "Medidas como zonas de baja emisión y materiales insonorizados ayudan a mitigar el ruido urbano."
+            }
+        ];
+
+        var currentQuestion = 0;
+        var correctCount = 0;
+        var incorrectCount = 0;
+
+        function startGame() {
+            correctCount = 0; // Restablecer el contador de respuestas correctas
+            incorrectCount = 0; // Restablecer el contador de respuestas incorrectas
+            document.getElementById("container").innerHTML = ""; // Limpiar el contenido
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            var questionObj = questions[currentQuestion];
+            document.getElementById("container").innerHTML += "<div id='question'>Pregunta: " + questionObj.question + "</div>";
+            var optionsHTML = "<div id='options'>";
+            for (var i = 0; i < questionObj.options.length; i++) {
+                optionsHTML += "<div class='option' onclick='checkAnswer(this)' data-value='" + String.fromCharCode(97 + i) + "'>" + questionObj.options[i] + "</div>";
+            }
+            optionsHTML += "</div>";
+            optionsHTML += "<div id='hint' style='display: block;'>" + questionObj.hint + "</div>";
+            document.getElementById("container").innerHTML += optionsHTML;
+            document.getElementById("container").innerHTML += "<div id='history'><div>Respuestas Correctas: <span id='correctCount'>" + correctCount + "</span></div><ul id='correct'></ul><div>Respuestas Incorrectas: <span id='incorrectCount'>" + incorrectCount + "</span></div><ul id='incorrect'></ul></div>";
+            document.getElementById("container").innerHTML += "<button id='nextButton' style='display:none;' onclick='nextQuestion()'>Siguiente</button>";
+        }
+
+        function checkAnswer(option) {
+            var selectedAnswer = option.getAttribute('data-value');
+            if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+                option.style.backgroundColor = "#008000";
+                document.getElementById("hint").style.display = "block";
+                document.getElementById("hint").innerHTML = "¡Correcto!";
+                correctCount++;
+            } else {
+                option.style.backgroundColor = "#FF0000";
+                document.getElementById("hint").style.display = "block";
+                document.getElementById("hint").innerHTML = "¡Incorrecto!";
+                incorrectCount++;
+            }
+            document.getElementById("correctCount").textContent = correctCount;
+            document.getElementById("incorrectCount").textContent = incorrectCount;
+            document.querySelectorAll('.option').forEach(function(element) {
+                element.style.pointerEvents = 'none';
+            });
+            document.getElementById('nextButton').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                document.getElementById("container").innerHTML = "";
+                displayQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById("container").innerHTML = "<h2>¡Juego terminado!</h2>";
+            document.getElementById("container").innerHTML += "<div>Respuestas Correctas: " + correctCount + "</div>";
+            document.getElementById("container").innerHTML += "<ul id='correct'></ul>";
+            document.getElementById("container").innerHTML += "<div>Respuestas Incorrectas: " + incorrectCount + "</div>";
+            document.getElementById("container").innerHTML += "<ul id='incorrect'></ul>";
+        }
+    </script>
+</body>
+</html>
